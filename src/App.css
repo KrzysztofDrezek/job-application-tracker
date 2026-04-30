@@ -113,6 +113,26 @@ textarea {
   grid-row: span 2;
 }
 
+.form-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-title-row h2 {
+  margin-bottom: 0;
+}
+
+.editing-badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
 label {
   display: grid;
   gap: 8px;
@@ -148,6 +168,20 @@ button {
 
 button:hover {
   background: #1d4ed8;
+}
+
+.form-buttons {
+  display: grid;
+  gap: 10px;
+}
+
+.cancel-button {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.cancel-button:hover {
+  background: #e5e7eb;
 }
 
 .empty-text {
@@ -306,6 +340,18 @@ button:hover {
   color: #166534;
 }
 
+.edit-button {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.8rem;
+}
+
+.edit-button:hover {
+  background: #dbeafe;
+}
+
 .delete-button {
   padding: 8px 12px;
   border-radius: 999px;
@@ -341,6 +387,16 @@ button:hover {
 
   .export-button {
     width: 100%;
+  }
+
+  .application-item {
+    flex-direction: column;
+  }
+
+  .application-actions {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   .hero h1 {

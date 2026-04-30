@@ -14,6 +14,7 @@ function App() {
   });
 
   const [statusFilter, setStatusFilter] = useState("All");
+  const [editingApplicationId, setEditingApplicationId] = useState(null);
 
   const [formData, setFormData] = useState({
     company: "",
@@ -29,6 +30,20 @@ function App() {
     localStorage.setItem("jobApplications", JSON.stringify(applications));
   }, [applications]);
 
+  function resetForm() {
+    setFormData({
+      company: "",
+      jobTitle: "",
+      dateApplied: "",
+      status: "Applied",
+      jobLink: "",
+      notes: "",
+      feedback: "",
+    });
+
+    setEditingApplicationId(null);
+  }
+
   function handleChange(event) {
     const { name, value } = event.target;
 
@@ -41,21 +56,48 @@ function App() {
   function handleSubmit(event) {
     event.preventDefault();
 
+    if (editingApplicationId) {
+      const updatedApplications = applications.map((application) => {
+        if (application.id === editingApplicationId) {
+          return {
+            ...application,
+            ...formData,
+          };
+        }
+
+        return application;
+      });
+
+      setApplications(updatedApplications);
+      resetForm();
+      return;
+    }
+
     const newApplication = {
       id: Date.now(),
       ...formData,
     };
 
     setApplications([newApplication, ...applications]);
+    resetForm();
+  }
+
+  function handleEdit(application) {
+    setEditingApplicationId(application.id);
 
     setFormData({
-      company: "",
-      jobTitle: "",
-      dateApplied: "",
-      status: "Applied",
-      jobLink: "",
-      notes: "",
-      feedback: "",
+      company: application.company,
+      jobTitle: application.jobTitle,
+      dateApplied: application.dateApplied,
+      status: application.status,
+      jobLink: application.jobLink,
+      notes: application.notes,
+      feedback: application.feedback,
+    });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
   }
 
@@ -65,6 +107,10 @@ function App() {
     );
 
     setApplications(updatedApplications);
+
+    if (editingApplicationId === id) {
+      resetForm();
+    }
   }
 
   function handleExportCSV() {
@@ -210,7 +256,15 @@ function App() {
 
       <section className="layout">
         <form className="card form-card" onSubmit={handleSubmit}>
-          <h2>Add Application</h2>
+          <div className="form-title-row">
+            <h2>
+              {editingApplicationId ? "Edit Application" : "Add Application"}
+            </h2>
+
+            {editingApplicationId && (
+              <span className="editing-badge">Editing</span>
+            )}
+          </div>
 
           <label>
             Company
@@ -292,7 +346,21 @@ function App() {
             />
           </label>
 
-          <button type="submit">Add Application</button>
+          <div className="form-buttons">
+            <button type="submit">
+              {editingApplicationId ? "Update Application" : "Add Application"}
+            </button>
+
+            {editingApplicationId && (
+              <button
+                className="cancel-button"
+                type="button"
+                onClick={resetForm}
+              >
+                Cancel Edit
+              </button>
+            )}
+          </div>
         </form>
 
         <section className="card chart-card">
@@ -390,6 +458,14 @@ function App() {
                     >
                       {application.status}
                     </strong>
+
+                    <button
+                      className="edit-button"
+                      type="button"
+                      onClick={() => handleEdit(application)}
+                    >
+                      Edit
+                    </button>
 
                     <button
                       className="delete-button"
