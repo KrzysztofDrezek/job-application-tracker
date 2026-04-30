@@ -227,29 +227,10 @@ function App() {
 
   return (
     <main className="app">
-      <section className="hero">
-        <div className="hero-content">
-          <p className="eyebrow">Portfolio Project</p>
+      <section className="page-header">
+        <div>
           <h1>Job Application Tracker</h1>
-          <p>
-            A React application for tracking job applications, monitoring
-            responses, analysing progress and exporting application data.
-          </p>
-
-          <div className="tech-stack">
-            <span>React</span>
-            <span>localStorage</span>
-            <span>Recharts</span>
-            <span>CSV Export</span>
-          </div>
-        </div>
-
-        <div className="hero-panel">
-          <span>Current response rate</span>
-          <strong>{responseRate}%</strong>
-          <p>
-            Based on applications that reached interview or offer stage.
-          </p>
+          <p>Track applications, monitor progress and keep your job search organised.</p>
         </div>
       </section>
 
@@ -494,8 +475,7 @@ function App() {
           </div>
 
           <p className="results-count">
-            Showing {filteredApplications.length} of {applications.length}{" "}
-            applications
+            Showing {filteredApplications.length} of {applications.length} applications
           </p>
 
           {filteredApplications.length === 0 ? (
@@ -576,10 +556,7 @@ function App() {
       </section>
 
       <footer className="footer">
-        <p>
-          Built as a portfolio project using React, localStorage, Recharts and
-          CSV export.
-        </p>
+        <p>Job Application Tracker</p>
       </footer>
     </main>
   );
