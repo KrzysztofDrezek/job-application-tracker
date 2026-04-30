@@ -249,11 +249,19 @@ button:hover {
   background: #374151;
 }
 
+.search-box {
+  margin-bottom: 14px;
+}
+
+.search-box input {
+  background: #f9fafb;
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 .filter-button {
@@ -277,19 +285,37 @@ button:hover {
   background: #111827;
 }
 
+.results-count {
+  margin: 0 0 18px;
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
 .applications-list {
   display: grid;
   gap: 14px;
 }
 
 .application-item {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   gap: 16px;
   padding: 18px;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   background: #f9fafb;
+}
+
+.application-main {
+  min-width: 0;
+}
+
+.application-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .application-item h3 {
@@ -306,6 +332,43 @@ button:hover {
   font-size: 0.9rem;
 }
 
+.application-details {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.application-details a {
+  width: fit-content;
+  color: #2563eb;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.application-details a:hover {
+  text-decoration: underline;
+}
+
+.detail-block {
+  padding: 12px;
+  border-radius: 14px;
+  background: white;
+  border: 1px solid #e5e7eb;
+}
+
+.detail-block strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #111827;
+  font-size: 0.85rem;
+}
+
+.detail-block p {
+  margin: 0;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
 .application-actions {
   display: flex;
   flex-direction: column;
@@ -318,6 +381,7 @@ button:hover {
   padding: 8px 12px;
   border-radius: 999px;
   font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .status.applied {
@@ -390,6 +454,10 @@ button:hover {
   }
 
   .application-item {
+    grid-template-columns: 1fr;
+  }
+
+  .application-top {
     flex-direction: column;
   }
 

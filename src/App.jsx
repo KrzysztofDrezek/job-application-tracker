@@ -14,6 +14,7 @@ function App() {
   });
 
   const [statusFilter, setStatusFilter] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [editingApplicationId, setEditingApplicationId] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -164,10 +165,20 @@ function App() {
     URL.revokeObjectURL(url);
   }
 
-  const filteredApplications =
-    statusFilter === "All"
-      ? applications
-      : applications.filter((application) => application.status === statusFilter);
+  const filteredApplications = applications.filter((application) => {
+    const matchesStatus =
+      statusFilter === "All" || application.status === statusFilter;
+
+    const searchValue = searchTerm.toLowerCase();
+
+    const matchesSearch =
+      application.company.toLowerCase().includes(searchValue) ||
+      application.jobTitle.toLowerCase().includes(searchValue) ||
+      application.notes.toLowerCase().includes(searchValue) ||
+      application.feedback.toLowerCase().includes(searchValue);
+
+    return matchesStatus && matchesSearch;
+  });
 
   const totalApplications = applications.length;
 
@@ -411,7 +422,7 @@ function App() {
           <div className="section-header">
             <div>
               <h2>Applications</h2>
-              <p>Filter, review and export your job applications.</p>
+              <p>Search, filter, review and export your job applications.</p>
             </div>
 
             <button
@@ -421,6 +432,15 @@ function App() {
             >
               Export CSV
             </button>
+          </div>
+
+          <div className="search-box">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search by company, role, notes or feedback..."
+            />
           </div>
 
           <div className="filters">
@@ -440,25 +460,60 @@ function App() {
             )}
           </div>
 
+          <p className="results-count">
+            Showing {filteredApplications.length} of {applications.length}{" "}
+            applications
+          </p>
+
           {filteredApplications.length === 0 ? (
-            <p className="empty-text">No applications found for this filter.</p>
+            <p className="empty-text">No applications found.</p>
           ) : (
             <div className="applications-list">
               {filteredApplications.map((application) => (
                 <article className="application-item" key={application.id}>
-                  <div>
-                    <h3>{application.jobTitle}</h3>
-                    <p>{application.company}</p>
-                    <span>{application.dateApplied}</span>
+                  <div className="application-main">
+                    <div className="application-top">
+                      <div>
+                        <h3>{application.jobTitle}</h3>
+                        <p>{application.company}</p>
+                        <span>{application.dateApplied}</span>
+                      </div>
+
+                      <strong
+                        className={`status ${application.status.toLowerCase()}`}
+                      >
+                        {application.status}
+                      </strong>
+                    </div>
+
+                    <div className="application-details">
+                      {application.jobLink && (
+                        <a
+                          href={application.jobLink}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          View job advert
+                        </a>
+                      )}
+
+                      {application.notes && (
+                        <div className="detail-block">
+                          <strong>Notes</strong>
+                          <p>{application.notes}</p>
+                        </div>
+                      )}
+
+                      {application.feedback && (
+                        <div className="detail-block">
+                          <strong>Feedback</strong>
+                          <p>{application.feedback}</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="application-actions">
-                    <strong
-                      className={`status ${application.status.toLowerCase()}`}
-                    >
-                      {application.status}
-                    </strong>
-
                     <button
                       className="edit-button"
                       type="button"
