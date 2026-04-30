@@ -6,7 +6,7 @@ The app allows users to save job applications, track their status, add notes and
 
 ## Live Demo
 
-Coming soon.
+https://job-application-tracker-one-omega.vercel.app
 
 ## Project Purpose
 
