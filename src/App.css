@@ -188,6 +188,7 @@ button:hover {
 .section-header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 16px;
   margin-bottom: 16px;
 }
@@ -199,6 +200,19 @@ button:hover {
 .section-header p {
   margin: 0;
   color: #6b7280;
+}
+
+.export-button {
+  white-space: nowrap;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #111827;
+  color: white;
+  font-size: 0.85rem;
+}
+
+.export-button:hover {
+  background: #374151;
 }
 
 .filters {
@@ -319,6 +333,14 @@ button:hover {
 
   .form-card {
     grid-row: auto;
+  }
+
+  .section-header {
+    flex-direction: column;
+  }
+
+  .export-button {
+    width: 100%;
   }
 
   .hero h1 {

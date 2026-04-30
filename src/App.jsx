@@ -67,6 +67,57 @@ function App() {
     setApplications(updatedApplications);
   }
 
+  function handleExportCSV() {
+    if (applications.length === 0) {
+      alert("There are no applications to export.");
+      return;
+    }
+
+    const headers = [
+      "Company",
+      "Job Title",
+      "Date Applied",
+      "Status",
+      "Job Link",
+      "Notes",
+      "Feedback",
+    ];
+
+    const rows = applications.map((application) => [
+      application.company,
+      application.jobTitle,
+      application.dateApplied,
+      application.status,
+      application.jobLink,
+      application.notes,
+      application.feedback,
+    ]);
+
+    const csvContent = [headers, ...rows]
+      .map((row) =>
+        row
+          .map((value) => {
+            const safeValue = String(value || "").replace(/"/g, '""');
+            return `"${safeValue}"`;
+          })
+          .join(",")
+      )
+      .join("\n");
+
+    const blob = new Blob([csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+
+    downloadLink.href = url;
+    downloadLink.download = "job-applications.csv";
+    downloadLink.click();
+
+    URL.revokeObjectURL(url);
+  }
+
   const filteredApplications =
     statusFilter === "All"
       ? applications
@@ -292,8 +343,16 @@ function App() {
           <div className="section-header">
             <div>
               <h2>Applications</h2>
-              <p>Filter and review your job applications.</p>
+              <p>Filter, review and export your job applications.</p>
             </div>
+
+            <button
+              className="export-button"
+              type="button"
+              onClick={handleExportCSV}
+            >
+              Export CSV
+            </button>
           </div>
 
           <div className="filters">
