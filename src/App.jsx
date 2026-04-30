@@ -228,12 +228,27 @@ function App() {
   return (
     <main className="app">
       <section className="hero">
-        <div>
+        <div className="hero-content">
           <p className="eyebrow">Portfolio Project</p>
           <h1>Job Application Tracker</h1>
           <p>
-            Track your job applications, monitor responses and understand your
-            job search progress.
+            A React application for tracking job applications, monitoring
+            responses, analysing progress and exporting application data.
+          </p>
+
+          <div className="tech-stack">
+            <span>React</span>
+            <span>localStorage</span>
+            <span>Recharts</span>
+            <span>CSV Export</span>
+          </div>
+        </div>
+
+        <div className="hero-panel">
+          <span>Current response rate</span>
+          <strong>{responseRate}%</strong>
+          <p>
+            Based on applications that reached interview or offer stage.
           </p>
         </div>
       </section>
@@ -242,35 +257,47 @@ function App() {
         <article className="stat-card">
           <span>Total Applications</span>
           <strong>{totalApplications}</strong>
+          <p>All saved job applications</p>
         </article>
 
         <article className="stat-card">
           <span>Interviews</span>
           <strong>{totalInterviews}</strong>
+          <p>Applications moved to interview</p>
         </article>
 
         <article className="stat-card">
           <span>Rejected</span>
           <strong>{totalRejected}</strong>
+          <p>Rejected applications</p>
         </article>
 
         <article className="stat-card">
           <span>Offers</span>
           <strong>{totalOffers}</strong>
+          <p>Successful outcomes</p>
         </article>
 
         <article className="stat-card highlight-card">
           <span>Response Rate</span>
           <strong>{responseRate}%</strong>
+          <p>Interview + offer ratio</p>
         </article>
       </section>
 
       <section className="layout">
         <form className="card form-card" onSubmit={handleSubmit}>
           <div className="form-title-row">
-            <h2>
-              {editingApplicationId ? "Edit Application" : "Add Application"}
-            </h2>
+            <div>
+              <h2>
+                {editingApplicationId ? "Edit Application" : "Add Application"}
+              </h2>
+              <p>
+                {editingApplicationId
+                  ? "Update the selected job application."
+                  : "Save a new job application to your tracker."}
+              </p>
+            </div>
 
             {editingApplicationId && (
               <span className="editing-badge">Editing</span>
@@ -375,10 +402,16 @@ function App() {
         </form>
 
         <section className="card chart-card">
-          <h2>Applications by Status</h2>
+          <div className="section-title">
+            <h2>Applications by Status</h2>
+            <p>Visual breakdown of your current application pipeline.</p>
+          </div>
 
           {statusChartData.length === 0 ? (
-            <p className="empty-text">No data available for chart yet.</p>
+            <div className="empty-state">
+              <strong>No chart data yet</strong>
+              <p>Add your first job application to generate analytics.</p>
+            </div>
           ) : (
             <>
               <div className="chart-wrapper">
@@ -466,7 +499,12 @@ function App() {
           </p>
 
           {filteredApplications.length === 0 ? (
-            <p className="empty-text">No applications found.</p>
+            <div className="empty-state">
+              <strong>No applications found</strong>
+              <p>
+                Add a new application or adjust your search and filter options.
+              </p>
+            </div>
           ) : (
             <div className="applications-list">
               {filteredApplications.map((application) => (
@@ -536,6 +574,13 @@ function App() {
           )}
         </section>
       </section>
+
+      <footer className="footer">
+        <p>
+          Built as a portfolio project using React, localStorage, Recharts and
+          CSV export.
+        </p>
+      </footer>
     </main>
   );
 }

@@ -4,8 +4,10 @@
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
+  font-family: Inter, Arial, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 32%),
+    #f4f6f8;
   color: #111827;
 }
 
@@ -24,10 +26,21 @@ textarea {
 .hero {
   max-width: 1100px;
   margin: 0 auto 30px;
-  padding: 32px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #111827, #1f2937);
+  padding: 34px;
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(17, 24, 39, 0.96), rgba(31, 41, 55, 0.96)),
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.45), transparent 28%);
   color: white;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: center;
+  box-shadow: 0 22px 55px rgba(15, 23, 42, 0.18);
+}
+
+.hero-content {
+  min-width: 0;
 }
 
 .eyebrow {
@@ -36,17 +49,64 @@ textarea {
   letter-spacing: 0.12em;
   font-size: 0.75rem;
   color: #93c5fd;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .hero h1 {
   margin: 0 0 12px;
-  font-size: 2.5rem;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: -0.05em;
 }
 
 .hero p {
-  max-width: 650px;
-  line-height: 1.6;
+  max-width: 680px;
+  line-height: 1.7;
+  color: #d1d5db;
+}
+
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.tech-stack span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.hero-panel {
+  padding: 22px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+}
+
+.hero-panel span {
+  display: block;
+  color: #cbd5e1;
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.hero-panel strong {
+  display: block;
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.hero-panel p {
+  margin: 0;
+  font-size: 0.9rem;
   color: #d1d5db;
 }
 
@@ -59,31 +119,43 @@ textarea {
 }
 
 .stat-card {
-  background: white;
-  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(229, 231, 235, 0.8);
 }
 
 .stat-card span {
   display: block;
   margin-bottom: 10px;
   color: #6b7280;
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 800;
 }
 
 .stat-card strong {
+  display: block;
   font-size: 2rem;
   color: #111827;
+  margin-bottom: 8px;
+}
+
+.stat-card p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.78rem;
+  line-height: 1.4;
 }
 
 .highlight-card {
   background: #111827;
+  border-color: #111827;
 }
 
 .highlight-card span,
-.highlight-card strong {
+.highlight-card strong,
+.highlight-card p {
   color: white;
 }
 
@@ -97,10 +169,11 @@ textarea {
 }
 
 .card {
-  background: white;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 22px;
   padding: 24px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(229, 231, 235, 0.85);
 }
 
 .card h2 {
@@ -116,12 +189,20 @@ textarea {
 .form-title-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
 }
 
 .form-title-row h2 {
-  margin-bottom: 0;
+  margin-bottom: 6px;
+}
+
+.form-title-row p,
+.section-title p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.5;
+  font-size: 0.9rem;
 }
 
 .editing-badge {
@@ -130,13 +211,13 @@ textarea {
   background: #fef3c7;
   color: #92400e;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 label {
   display: grid;
   gap: 8px;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.9rem;
 }
 
@@ -145,10 +226,18 @@ select,
 textarea {
   width: 100%;
   border: 1px solid #d1d5db;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 12px 14px;
   background: #ffffff;
   color: #111827;
+  outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
 textarea {
@@ -162,12 +251,14 @@ button {
   padding: 14px 18px;
   background: #2563eb;
   color: white;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 
 button:hover {
   background: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .form-buttons {
@@ -192,6 +283,14 @@ button:hover {
   min-height: 360px;
 }
 
+.section-title {
+  margin-bottom: 14px;
+}
+
+.section-title h2 {
+  margin-bottom: 6px;
+}
+
 .chart-wrapper {
   width: 100%;
   height: 260px;
@@ -210,7 +309,7 @@ button:hover {
   gap: 8px;
   color: #4b5563;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .legend-color {
@@ -289,7 +388,26 @@ button:hover {
   margin: 0 0 18px;
   color: #6b7280;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 800;
+}
+
+.empty-state {
+  padding: 22px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 18px;
+  background: #f8fafc;
+  color: #475569;
+}
+
+.empty-state strong {
+  display: block;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.empty-state p {
+  margin: 0;
+  line-height: 1.5;
 }
 
 .applications-list {
@@ -303,7 +421,7 @@ button:hover {
   gap: 16px;
   padding: 18px;
   border: 1px solid #e5e7eb;
-  border-radius: 16px;
+  border-radius: 18px;
   background: #f9fafb;
 }
 
@@ -341,7 +459,7 @@ button:hover {
 .application-details a {
   width: fit-content;
   color: #2563eb;
-  font-weight: 700;
+  font-weight: 800;
   text-decoration: none;
 }
 
@@ -428,13 +546,29 @@ button:hover {
   background: #fee2e2;
 }
 
-@media (max-width: 850px) {
-  .app {
-    padding: 20px;
+.footer {
+  max-width: 1100px;
+  margin: 28px auto 0;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.footer p {
+  margin: 0;
+}
+
+@media (max-width: 950px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-panel {
+    max-width: 360px;
   }
 
   .dashboard {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .layout {
@@ -443,6 +577,20 @@ button:hover {
 
   .form-card {
     grid-row: auto;
+  }
+}
+
+@media (max-width: 650px) {
+  .app {
+    padding: 20px;
+  }
+
+  .hero {
+    padding: 26px;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
   }
 
   .section-header {
@@ -465,9 +613,5 @@ button:hover {
     align-items: flex-start;
     flex-direction: row;
     flex-wrap: wrap;
-  }
-
-  .hero h1 {
-    font-size: 2rem;
   }
 }
