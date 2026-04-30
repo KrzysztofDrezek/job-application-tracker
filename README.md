@@ -1,16 +1,61 @@
-# React + Vite
+# Job Application Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Job Application Tracker is a React web application designed to help users organise, monitor and analyse their job search process.
 
-Currently, two official plugins are available:
+The app allows users to save job applications, track their status, add notes and feedback, search and filter applications, view dashboard statistics, visualise application status data and export records to CSV.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Live Demo
 
-## React Compiler
+Coming soon.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Project Purpose
 
-## Expanding the ESLint configuration
+This project was built to solve a real problem: keeping track of multiple job applications during an active job search.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Instead of using a spreadsheet, the application provides a cleaner interface with dashboard analytics, filtering, search and export functionality.
+
+The project also demonstrates frontend development, state management, data persistence and basic data analysis in a practical context.
+
+## Features
+
+- Add new job applications
+- Edit existing applications
+- Delete applications
+- Save data in localStorage
+- Filter applications by status
+- Search by company, role, notes or feedback
+- Track application status:
+  - Applied
+  - Interview
+  - Rejected
+  - Offer
+- View dashboard statistics
+- Calculate response rate
+- Display applications by status using a chart
+- Export application data to CSV
+- Responsive layout for desktop and mobile
+
+## Tech Stack
+
+- React
+- Vite
+- JavaScript
+- CSS
+- Recharts
+- localStorage
+- CSV export
+
+## Dashboard Metrics
+
+The dashboard includes:
+
+- Total Applications
+- Interviews
+- Rejected Applications
+- Offers
+- Response Rate
+
+The response rate is calculated as:
+
+```text
+(Interviews + Offers) / Total Applications * 100
