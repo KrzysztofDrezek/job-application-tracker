@@ -50,6 +50,43 @@ textarea {
   color: #d1d5db;
 }
 
+.dashboard {
+  max-width: 1100px;
+  margin: 0 auto 24px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.stat-card span {
+  display: block;
+  margin-bottom: 10px;
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.stat-card strong {
+  font-size: 2rem;
+  color: #111827;
+}
+
+.highlight-card {
+  background: #111827;
+}
+
+.highlight-card span,
+.highlight-card strong {
+  color: white;
+}
+
 .layout {
   max-width: 1100px;
   margin: 0 auto;
@@ -73,6 +110,7 @@ textarea {
 .form-card {
   display: grid;
   gap: 16px;
+  grid-row: span 2;
 }
 
 label {
@@ -116,79 +154,35 @@ button:hover {
   color: #6b7280;
 }
 
-.applications-list {
-  display: grid;
-  gap: 14px;
+.chart-card {
+  min-height: 360px;
 }
 
-.application-item {
+.chart-wrapper {
+  width: 100%;
+  height: 260px;
+}
+
+.chart-legend {
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 18px;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: #f9fafb;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
 }
 
-.application-item h3 {
-  margin: 0 0 6px;
-}
-
-.application-item p {
-  margin: 0 0 8px;
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: #4b5563;
-}
-
-.application-item span {
-  color: #6b7280;
   font-size: 0.9rem;
+  font-weight: 700;
 }
 
-.status {
-  height: fit-content;
-  padding: 8px 12px;
+.legend-color {
+  width: 12px;
+  height: 12px;
   border-radius: 999px;
-  font-size: 0.8rem;
-}
-
-.status.applied {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-.status.interview {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.status.rejected {
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.status.offer {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.application-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-}
-
-.delete-button {
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: #f3f4f6;
-  color: #991b1b;
-  font-size: 0.8rem;
-}
-
-.delete-button:hover {
-  background: #fee2e2;
 }
 
 .section-header {
@@ -235,13 +229,96 @@ button:hover {
   background: #111827;
 }
 
+.applications-list {
+  display: grid;
+  gap: 14px;
+}
+
+.application-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #f9fafb;
+}
+
+.application-item h3 {
+  margin: 0 0 6px;
+}
+
+.application-item p {
+  margin: 0 0 8px;
+  color: #4b5563;
+}
+
+.application-item span {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.application-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.status {
+  height: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+.status.applied {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status.interview {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.status.offer {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.delete-button {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #991b1b;
+  font-size: 0.8rem;
+}
+
+.delete-button:hover {
+  background: #fee2e2;
+}
+
 @media (max-width: 850px) {
   .app {
     padding: 20px;
   }
 
+  .dashboard {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .layout {
     grid-template-columns: 1fr;
+  }
+
+  .form-card {
+    grid-row: auto;
   }
 
   .hero h1 {

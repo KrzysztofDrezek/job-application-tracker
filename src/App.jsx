@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import "./App.css";
 
 function App() {
   const [applications, setApplications] = useState(() => {
-  const savedApplications = localStorage.getItem("jobApplications");
+    const savedApplications = localStorage.getItem("jobApplications");
 
-  if (savedApplications) {
-    return JSON.parse(savedApplications);
-  }
+    if (savedApplications) {
+      return JSON.parse(savedApplications);
+    }
 
-  return [];
-});
+    return [];
+  });
 
-const [statusFilter, setStatusFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const [formData, setFormData] = useState({
     company: "",
@@ -25,8 +26,8 @@ const [statusFilter, setStatusFilter] = useState("All");
   });
 
   useEffect(() => {
-  localStorage.setItem("jobApplications", JSON.stringify(applications));
-}, [applications]);
+    localStorage.setItem("jobApplications", JSON.stringify(applications));
+  }, [applications]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -59,17 +60,62 @@ const [statusFilter, setStatusFilter] = useState("All");
   }
 
   function handleDelete(id) {
-  const updatedApplications = applications.filter(
-    (application) => application.id !== id
-  );
+    const updatedApplications = applications.filter(
+      (application) => application.id !== id
+    );
 
-  setApplications(updatedApplications);
-}
+    setApplications(updatedApplications);
+  }
 
-const filteredApplications =
-  statusFilter === "All"
-    ? applications
-    : applications.filter((application) => application.status === statusFilter);
+  const filteredApplications =
+    statusFilter === "All"
+      ? applications
+      : applications.filter((application) => application.status === statusFilter);
+
+  const totalApplications = applications.length;
+
+  const totalInterviews = applications.filter(
+    (application) => application.status === "Interview"
+  ).length;
+
+  const totalRejected = applications.filter(
+    (application) => application.status === "Rejected"
+  ).length;
+
+  const totalOffers = applications.filter(
+    (application) => application.status === "Offer"
+  ).length;
+
+  const responseRate =
+    totalApplications === 0
+      ? 0
+      : Math.round(((totalInterviews + totalOffers) / totalApplications) * 100);
+
+  const statusChartData = [
+    {
+      name: "Applied",
+      value: applications.filter((app) => app.status === "Applied").length,
+    },
+    {
+      name: "Interview",
+      value: totalInterviews,
+    },
+    {
+      name: "Rejected",
+      value: totalRejected,
+    },
+    {
+      name: "Offer",
+      value: totalOffers,
+    },
+  ].filter((item) => item.value > 0);
+
+  const statusColors = {
+    Applied: "#2563eb",
+    Interview: "#f59e0b",
+    Rejected: "#ef4444",
+    Offer: "#22c55e",
+  };
 
   return (
     <main className="app">
@@ -82,6 +128,33 @@ const filteredApplications =
             job search progress.
           </p>
         </div>
+      </section>
+
+      <section className="dashboard">
+        <article className="stat-card">
+          <span>Total Applications</span>
+          <strong>{totalApplications}</strong>
+        </article>
+
+        <article className="stat-card">
+          <span>Interviews</span>
+          <strong>{totalInterviews}</strong>
+        </article>
+
+        <article className="stat-card">
+          <span>Rejected</span>
+          <strong>{totalRejected}</strong>
+        </article>
+
+        <article className="stat-card">
+          <span>Offers</span>
+          <strong>{totalOffers}</strong>
+        </article>
+
+        <article className="stat-card highlight-card">
+          <span>Response Rate</span>
+          <strong>{responseRate}%</strong>
+        </article>
       </section>
 
       <section className="layout">
@@ -171,16 +244,61 @@ const filteredApplications =
           <button type="submit">Add Application</button>
         </form>
 
-        <section className="card list-card">
-  <div className="section-header">
-    <div>
-      <h2>Applications</h2>
-      <p>Filter and review your job applications.</p>
-    </div>
-  </div>
+        <section className="card chart-card">
+          <h2>Applications by Status</h2>
 
-            <div className="filters">
-              {["All", "Applied", "Interview", "Rejected", "Offer"].map((status) => (
+          {statusChartData.length === 0 ? (
+            <p className="empty-text">No data available for chart yet.</p>
+          ) : (
+            <>
+              <div className="chart-wrapper">
+                <ResponsiveContainer width="100%" height={260}>
+                  <PieChart>
+                    <Pie
+                      data={statusChartData}
+                      dataKey="value"
+                      nameKey="name"
+                      outerRadius={90}
+                      label
+                    >
+                      {statusChartData.map((entry) => (
+                        <Cell
+                          key={entry.name}
+                          fill={statusColors[entry.name]}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="chart-legend">
+                {statusChartData.map((item) => (
+                  <div className="legend-item" key={item.name}>
+                    <span
+                      className="legend-color"
+                      style={{ backgroundColor: statusColors[item.name] }}
+                    ></span>
+                    {item.name}: {item.value}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </section>
+
+        <section className="card list-card">
+          <div className="section-header">
+            <div>
+              <h2>Applications</h2>
+              <p>Filter and review your job applications.</p>
+            </div>
+          </div>
+
+          <div className="filters">
+            {["All", "Applied", "Interview", "Rejected", "Offer"].map(
+              (status) => (
                 <button
                   key={status}
                   type="button"
@@ -191,12 +309,13 @@ const filteredApplications =
                 >
                   {status}
                 </button>
-              ))}
-            </div>
+              )
+            )}
+          </div>
 
-            {filteredApplications.length === 0 ? (
-              <p className="empty-text">No applications found for this filter.</p>
-            ) : (
+          {filteredApplications.length === 0 ? (
+            <p className="empty-text">No applications found for this filter.</p>
+          ) : (
             <div className="applications-list">
               {filteredApplications.map((application) => (
                 <article className="application-item" key={application.id}>
@@ -206,19 +325,21 @@ const filteredApplications =
                     <span>{application.dateApplied}</span>
                   </div>
 
-                 <div className="application-actions">
-                  <strong className={`status ${application.status.toLowerCase()}`}>
-                    {application.status}
-                  </strong>
+                  <div className="application-actions">
+                    <strong
+                      className={`status ${application.status.toLowerCase()}`}
+                    >
+                      {application.status}
+                    </strong>
 
-                  <button
-                    className="delete-button"
-                    type="button"
-                    onClick={() => handleDelete(application.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
+                    <button
+                      className="delete-button"
+                      type="button"
+                      onClick={() => handleDelete(application.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </article>
               ))}
             </div>
