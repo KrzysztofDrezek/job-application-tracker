@@ -123,9 +123,9 @@ function App() {
         email: "",
         password: "",
       });
-    } catch (error) {
-      setAuthError("Server connection failed");
-    }
+    } catch {
+  setAuthError("Server connection failed");
+}
   }
 
   function handleLogout() {
