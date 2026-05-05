@@ -13,17 +13,10 @@ import {
 } from "recharts";
 import "./App.css";
 
+const API_URL = "http://localhost:5000/api/applications";
+
 function App() {
-  const [applications, setApplications] = useState(() => {
-    const savedApplications = localStorage.getItem("jobApplications");
-
-    if (savedApplications) {
-      return JSON.parse(savedApplications);
-    }
-
-    return [];
-  });
-
+  const [applications, setApplications] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("newest");
@@ -40,8 +33,18 @@ function App() {
   });
 
   useEffect(() => {
-    localStorage.setItem("jobApplications", JSON.stringify(applications));
-  }, [applications]);
+    fetchApplications();
+  }, []);
+
+  async function fetchApplications() {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setApplications(data);
+    } catch (error) {
+      console.error("Failed to fetch applications:", error);
+    }
+  }
 
   function resetForm() {
     setFormData({
@@ -66,46 +69,46 @@ function App() {
     });
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    if (editingApplicationId) {
-      const updatedApplications = applications.map((application) => {
-        if (application.id === editingApplicationId) {
-          return {
-            ...application,
-            ...formData,
-          };
-        }
+    try {
+      if (editingApplicationId) {
+        await fetch(`${API_URL}/${editingApplicationId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+      } else {
+        await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+      }
 
-        return application;
-      });
-
-      setApplications(updatedApplications);
+      await fetchApplications();
       resetForm();
-      return;
+    } catch (error) {
+      console.error("Failed to save application:", error);
     }
-
-    const newApplication = {
-      id: Date.now(),
-      ...formData,
-    };
-
-    setApplications([newApplication, ...applications]);
-    resetForm();
   }
 
   function handleEdit(application) {
     setEditingApplicationId(application.id);
 
     setFormData({
-      company: application.company,
-      jobTitle: application.jobTitle,
-      dateApplied: application.dateApplied,
-      status: application.status,
-      jobLink: application.jobLink,
-      notes: application.notes,
-      feedback: application.feedback,
+      company: application.company || "",
+      jobTitle: application.jobTitle || "",
+      dateApplied: application.dateApplied || "",
+      status: application.status || "Applied",
+      jobLink: application.jobLink || "",
+      notes: application.notes || "",
+      feedback: application.feedback || "",
     });
 
     window.scrollTo({
@@ -114,15 +117,19 @@ function App() {
     });
   }
 
-  function handleDelete(id) {
-    const updatedApplications = applications.filter(
-      (application) => application.id !== id
-    );
+  async function handleDelete(id) {
+    try {
+      await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+      });
 
-    setApplications(updatedApplications);
+      await fetchApplications();
 
-    if (editingApplicationId === id) {
-      resetForm();
+      if (editingApplicationId === id) {
+        resetForm();
+      }
+    } catch (error) {
+      console.error("Failed to delete application:", error);
     }
   }
 
@@ -184,10 +191,10 @@ function App() {
     const searchValue = searchTerm.toLowerCase();
 
     const matchesSearch =
-      application.company.toLowerCase().includes(searchValue) ||
-      application.jobTitle.toLowerCase().includes(searchValue) ||
-      application.notes.toLowerCase().includes(searchValue) ||
-      application.feedback.toLowerCase().includes(searchValue);
+      application.company?.toLowerCase().includes(searchValue) ||
+      application.jobTitle?.toLowerCase().includes(searchValue) ||
+      application.notes?.toLowerCase().includes(searchValue) ||
+      application.feedback?.toLowerCase().includes(searchValue);
 
     return matchesStatus && matchesSearch;
   });
@@ -335,7 +342,7 @@ function App() {
               <p>
                 {editingApplicationId
                   ? "Update the selected job application."
-                  : "Save a new job application to your tracker."}
+                  : "Save a new job application to the database."}
               </p>
             </div>
 
