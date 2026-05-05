@@ -1,39 +1,45 @@
 # Job Application Tracker
 
-Job Application Tracker is a React web application designed to help users organise, monitor and analyse their job search process.
+A React web application designed to organise and analyse the job search process.
 
-The app allows users to save job applications, track their status, add notes and feedback, search and filter applications, view dashboard statistics, visualise application status data and export records to CSV.
+The app allows users to track job applications, monitor progress, analyse outcomes and manage all relevant information in one place — without relying on spreadsheets.
 
 ## Live Demo
 
 https://job-application-tracker-one-omega.vercel.app
 
-## Project Purpose
+## Overview
 
-This project was built to solve a real problem: keeping track of multiple job applications during an active job search.
+Managing multiple job applications can quickly become overwhelming. This project solves that problem by providing a clean interface with filtering, search, analytics and data visualisation.
 
-Instead of using a spreadsheet, the application provides a cleaner interface with dashboard analytics, filtering, search and export functionality.
-
-The project also demonstrates frontend development, state management, data persistence and basic data analysis in a practical context.
+The application combines frontend development with practical data analysis, focusing on usability and real-world value.
 
 ## Features
 
-- Add new job applications
-- Edit existing applications
-- Delete applications
-- Save data in localStorage
-- Filter applications by status
-- Search by company, role, notes or feedback
+- Add, edit and delete job applications (CRUD)
+- Store data in browser localStorage
 - Track application status:
   - Applied
   - Interview
   - Rejected
   - Offer
-- View dashboard statistics
-- Calculate response rate
-- Display applications by status using a chart
-- Export application data to CSV
-- Responsive layout for desktop and mobile
+- Search by company, role, notes or feedback
+- Filter applications by status
+- Sort applications by:
+  - Date (newest / oldest)
+  - Company (A–Z)
+  - Status
+- Dashboard metrics:
+  - Total applications
+  - Interviews
+  - Rejections
+  - Offers
+  - Response rate
+- Data visualisation:
+  - Applications by status (Pie Chart)
+  - Applications over time (Bar Chart)
+- Export data to CSV
+- Fully responsive layout
 
 ## Tech Stack
 
@@ -43,27 +49,16 @@ The project also demonstrates frontend development, state management, data persi
 - CSS
 - Recharts
 - localStorage
-- CSV export
 
-## Dashboard Metrics
+## Data & Analytics
 
-The dashboard includes:
+The application includes basic analytics to help users understand their job search performance.
 
-- Total Applications
-- Interviews
-- Rejected Applications
-- Offers
-- Response Rate
-
-The response rate is calculated as:
+Response rate is calculated as:
 
 (Interviews + Offers) / Total Applications * 100
 
-This gives users a simple way to understand how many applications moved beyond the initial applied stage.
-
-## Screenshots
-
-Screenshots will be added after deployment.
+The "Applications over time" chart provides insight into activity trends and consistency of job applications.
 
 ## Installation
 
@@ -71,7 +66,7 @@ Clone the repository:
 
 git clone https://github.com/KrzysztofDrezek/job-application-tracker.git
 
-Go into the project folder:
+Navigate to the project folder:
 
 cd job-application-tracker
 
@@ -83,74 +78,43 @@ Run the development server:
 
 npm run dev
 
-Open the local development link in your browser.
-
-Usually:
+Open in browser:
 
 http://localhost:5173/
 
-## Available Scripts
+## Scripts
 
-Run the app locally:
-
-npm run dev
-
-Create a production build:
-
-npm run build
-
-Preview the production build:
-
-npm run preview
+- `npm run dev` — run development server
+- `npm run build` — build production version
+- `npm run preview` — preview production build
 
 ## Data Storage
 
-This version uses browser localStorage.
+This version uses browser localStorage, meaning all data is stored locally in the user's browser.
 
-This means application data is saved in the user's browser and remains available after refreshing or reopening the page.
-
-Future versions could include a backend database using Node.js, Express and SQLite.
-
-## Project Structure
-
-job-application-tracker
-- public
-- src
-  - App.jsx
-  - App.css
-  - main.jsx
-- package.json
-- vite.config.js
-- README.md
+For larger-scale applications, this could be extended with a backend (Node.js, Express, SQLite).
 
 ## Future Improvements
 
-Planned improvements include:
-
-- Backend API with Node.js and Express
-- SQLite database storage
+- Backend API (Node.js + Express)
+- Database integration (SQLite)
 - User authentication
-- More detailed analytics
-- Applications over time chart
+- Advanced analytics (trends, ratios, time-based insights)
+- Additional status types (e.g. Assessment, No Response)
 - Dark mode
-- Deployment to Vercel or Netlify
 
 ## What I Learned
 
-During this project, I practised:
-
-- Building a React application with state management
-- Managing form data
-- Adding, editing and deleting records
+- Building a full React application with state management
+- Handling form data and user interactions
+- Implementing search, filtering and sorting logic
 - Persisting data with localStorage
-- Creating search and filter functionality
-- Calculating dashboard metrics
-- Displaying chart data with Recharts
+- Creating dashboard metrics and analytics
+- Working with Recharts for data visualisation
 - Exporting structured data to CSV
-- Improving UI for portfolio presentation
+- Designing a user-focused interface for a real problem
 
 ## Author
 
-Krzysztof Drezek
-
+Krzysztof Drezek  
 GitHub: https://github.com/KrzysztofDrezek
