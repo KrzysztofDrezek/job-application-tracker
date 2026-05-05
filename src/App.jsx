@@ -1,5 +1,16 @@
 import { useEffect, useState } from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import "./App.css";
 
 function App() {
@@ -246,6 +257,23 @@ function App() {
     },
   ].filter((item) => item.value > 0);
 
+  const applicationsOverTimeData = Object.values(
+    applications.reduce((acc, application) => {
+      const date = application.dateApplied;
+
+      if (!acc[date]) {
+        acc[date] = {
+          date,
+          applications: 0,
+        };
+      }
+
+      acc[date].applications += 1;
+
+      return acc;
+    }, {})
+  ).sort((a, b) => new Date(a.date) - new Date(b.date));
+
   const statusColors = {
     Applied: "#2563eb",
     Interview: "#f59e0b",
@@ -460,6 +488,36 @@ function App() {
                 ))}
               </div>
             </>
+          )}
+        </section>
+
+        <section className="card chart-card">
+          <div className="section-title">
+            <h2>Applications Over Time</h2>
+            <p>Shows how many applications were submitted on each date.</p>
+          </div>
+
+          {applicationsOverTimeData.length === 0 ? (
+            <div className="empty-state">
+              <strong>No timeline data yet</strong>
+              <p>Add applications with dates to generate this chart.</p>
+            </div>
+          ) : (
+            <div className="chart-wrapper">
+              <ResponsiveContainer width="100%" height={260}>
+                <BarChart data={applicationsOverTimeData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis allowDecimals={false} />
+                  <Tooltip />
+                  <Bar
+                    dataKey="applications"
+                    fill="#2563eb"
+                    radius={[8, 8, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           )}
         </section>
 

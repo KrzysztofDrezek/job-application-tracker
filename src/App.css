@@ -122,7 +122,7 @@ textarea {
 .form-card {
   display: grid;
   gap: 16px;
-  grid-row: span 2;
+  grid-row: span 3;
 }
 
 .form-title-row {
@@ -295,11 +295,18 @@ button:hover {
   background: #f9fafb;
 }
 
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 12px;
 }
 
 .filter-button {
@@ -321,14 +328,6 @@ button:hover {
 
 .active-filter:hover {
   background: #111827;
-}
-
-.controls-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 14px;
-  margin-bottom: 12px;
 }
 
 .sort-control {
@@ -554,6 +553,14 @@ button:hover {
     width: 100%;
   }
 
+  .controls-row {
+    flex-direction: column;
+  }
+
+  .sort-control {
+    width: 100%;
+  }
+
   .application-item {
     grid-template-columns: 1fr;
   }
@@ -567,12 +574,4 @@ button:hover {
     flex-direction: row;
     flex-wrap: wrap;
   }
-
-  .controls-row {
-  flex-direction: column;
-}
-
-.sort-control {
-  width: 100%;
-}
 }
