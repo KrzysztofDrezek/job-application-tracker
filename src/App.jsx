@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import "./App.css";
 
-const API_URL = "http://localhost:5000/api/applications";
+const API_URL = "https://job-application-tracker-geyv.onrender.com/api/applications";
 
 function App() {
   const [applications, setApplications] = useState([]);
