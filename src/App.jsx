@@ -15,6 +15,7 @@ function App() {
 
   const [statusFilter, setStatusFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOption, setSortOption] = useState("newest");
   const [editingApplicationId, setEditingApplicationId] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -180,6 +181,33 @@ function App() {
     return matchesStatus && matchesSearch;
   });
 
+  const sortedApplications = [...filteredApplications].sort((a, b) => {
+    if (sortOption === "newest") {
+      return new Date(b.dateApplied) - new Date(a.dateApplied);
+    }
+
+    if (sortOption === "oldest") {
+      return new Date(a.dateApplied) - new Date(b.dateApplied);
+    }
+
+    if (sortOption === "company") {
+      return a.company.localeCompare(b.company);
+    }
+
+    if (sortOption === "status") {
+      const statusOrder = {
+        Applied: 1,
+        Interview: 2,
+        Rejected: 3,
+        Offer: 4,
+      };
+
+      return statusOrder[a.status] - statusOrder[b.status];
+    }
+
+    return 0;
+  });
+
   const totalApplications = applications.length;
 
   const totalInterviews = applications.filter(
@@ -230,7 +258,10 @@ function App() {
       <section className="page-header">
         <div>
           <h1>Job Application Tracker</h1>
-          <p>Track applications, monitor progress and keep your job search organised.</p>
+          <p>
+            Track applications, monitor progress and keep your job search
+            organised.
+          </p>
         </div>
       </section>
 
@@ -436,7 +467,7 @@ function App() {
           <div className="section-header">
             <div>
               <h2>Applications</h2>
-              <p>Search, filter, review and export your job applications.</p>
+              <p>Search, filter, sort, review and export your applications.</p>
             </div>
 
             <button
@@ -457,28 +488,44 @@ function App() {
             />
           </div>
 
-          <div className="filters">
-            {["All", "Applied", "Interview", "Rejected", "Offer"].map(
-              (status) => (
-                <button
-                  key={status}
-                  type="button"
-                  className={`filter-button ${
-                    statusFilter === status ? "active-filter" : ""
-                  }`}
-                  onClick={() => setStatusFilter(status)}
-                >
-                  {status}
-                </button>
-              )
-            )}
+          <div className="controls-row">
+            <div className="filters">
+              {["All", "Applied", "Interview", "Rejected", "Offer"].map(
+                (status) => (
+                  <button
+                    key={status}
+                    type="button"
+                    className={`filter-button ${
+                      statusFilter === status ? "active-filter" : ""
+                    }`}
+                    onClick={() => setStatusFilter(status)}
+                  >
+                    {status}
+                  </button>
+                )
+              )}
+            </div>
+
+            <label className="sort-control">
+              Sort by
+              <select
+                value={sortOption}
+                onChange={(event) => setSortOption(event.target.value)}
+              >
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="company">Company A-Z</option>
+                <option value="status">Status</option>
+              </select>
+            </label>
           </div>
 
           <p className="results-count">
-            Showing {filteredApplications.length} of {applications.length} applications
+            Showing {sortedApplications.length} of {applications.length}{" "}
+            applications
           </p>
 
-          {filteredApplications.length === 0 ? (
+          {sortedApplications.length === 0 ? (
             <div className="empty-state">
               <strong>No applications found</strong>
               <p>
@@ -487,7 +534,7 @@ function App() {
             </div>
           ) : (
             <div className="applications-list">
-              {filteredApplications.map((application) => (
+              {sortedApplications.map((application) => (
                 <article className="application-item" key={application.id}>
                   <div className="application-main">
                     <div className="application-top">
