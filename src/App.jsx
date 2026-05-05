@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import "./App.css";
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "https://job-application-tracker-geyv.onrender.com";
 const APPLICATIONS_URL = `${API_BASE_URL}/api/applications`;
 
 function App() {
