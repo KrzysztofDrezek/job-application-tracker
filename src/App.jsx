@@ -844,8 +844,21 @@ function App() {
       </section>
 
       <footer className="footer">
-        <p>Job Application Tracker</p>
-      </footer>
+  <p>Job Application Tracker</p>
+
+  <div className="support-banner">
+    <span>
+      If you find this project useful, you can support my work ☕
+    </span>
+    <a
+      href="https://buymeacoffee.com/krzysztofdrezek"
+      target="_blank"
+      rel="noreferrer"
+    >
+      Buy me a coffee
+    </a>
+  </div>
+</footer>
     </main>
   );
 }

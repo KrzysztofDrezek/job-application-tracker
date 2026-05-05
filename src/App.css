@@ -681,4 +681,29 @@ button:hover {
     flex-direction: row;
     flex-wrap: wrap;
   }
+
+  .support-banner {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.support-banner a {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #f59e0b;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.support-banner a:hover {
+  background: #d97706;
+}
 }
