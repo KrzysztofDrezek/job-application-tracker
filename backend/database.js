@@ -17,17 +17,30 @@ const db = new sqlite.Database(dbPath, (err) => {
   }
 });
 
-db.run(`
-  CREATE TABLE IF NOT EXISTS applications (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    company TEXT NOT NULL,
-    jobTitle TEXT NOT NULL,
-    dateApplied TEXT NOT NULL,
-    status TEXT NOT NULL,
-    jobLink TEXT,
-    notes TEXT,
-    feedback TEXT
-  )
-`);
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS applications (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER,
+      company TEXT NOT NULL,
+      jobTitle TEXT NOT NULL,
+      dateApplied TEXT NOT NULL,
+      status TEXT NOT NULL,
+      jobLink TEXT,
+      notes TEXT,
+      feedback TEXT,
+      FOREIGN KEY (userId) REFERENCES users(id)
+    )
+  `);
+});
 
 export default db;

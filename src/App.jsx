@@ -13,10 +13,25 @@ import {
 } from "recharts";
 import "./App.css";
 
-const API_URL = "https://job-application-tracker-geyv.onrender.com/api/applications";
+const API_BASE_URL = "http://localhost:5000";
+const APPLICATIONS_URL = `${API_BASE_URL}/api/applications`;
 
 function App() {
   const [applications, setApplications] = useState([]);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("jobTrackerUser");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+  const [token, setToken] = useState(() => localStorage.getItem("jobTrackerToken"));
+  const [authMode, setAuthMode] = useState("login");
+  const [authError, setAuthError] = useState("");
+
+  const [authData, setAuthData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
   const [statusFilter, setStatusFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("newest");
@@ -33,17 +48,93 @@ function App() {
   });
 
   useEffect(() => {
-    fetchApplications();
-  }, []);
+    if (token) {
+      fetchApplications();
+    }
+  }, [token]);
 
   async function fetchApplications() {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(APPLICATIONS_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        handleLogout();
+        return;
+      }
+
       const data = await response.json();
       setApplications(data);
     } catch (error) {
       console.error("Failed to fetch applications:", error);
     }
+  }
+
+  function handleAuthChange(event) {
+    const { name, value } = event.target;
+
+    setAuthData({
+      ...authData,
+      [name]: value,
+    });
+  }
+
+  async function handleAuthSubmit(event) {
+    event.preventDefault();
+    setAuthError("");
+
+    const endpoint =
+      authMode === "login" ? "/api/auth/login" : "/api/auth/register";
+
+    const payload =
+      authMode === "login"
+        ? {
+            email: authData.email,
+            password: authData.password,
+          }
+        : authData;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setAuthError(data.error || "Authentication failed");
+        return;
+      }
+
+      localStorage.setItem("jobTrackerToken", data.token);
+      localStorage.setItem("jobTrackerUser", JSON.stringify(data.user));
+
+      setToken(data.token);
+      setUser(data.user);
+      setAuthData({
+        name: "",
+        email: "",
+        password: "",
+      });
+    } catch (error) {
+      setAuthError("Server connection failed");
+    }
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("jobTrackerToken");
+    localStorage.removeItem("jobTrackerUser");
+    setToken(null);
+    setUser(null);
+    setApplications([]);
+    resetForm();
   }
 
   function resetForm() {
@@ -73,22 +164,24 @@ function App() {
     event.preventDefault();
 
     try {
-      if (editingApplicationId) {
-        await fetch(`${API_URL}/${editingApplicationId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
-      } else {
-        await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+      const url = editingApplicationId
+        ? `${APPLICATIONS_URL}/${editingApplicationId}`
+        : APPLICATIONS_URL;
+
+      const method = editingApplicationId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to save application");
+        return;
       }
 
       await fetchApplications();
@@ -119,8 +212,11 @@ function App() {
 
   async function handleDelete(id) {
     try {
-      await fetch(`${API_URL}/${id}`, {
+      await fetch(`${APPLICATIONS_URL}/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       await fetchApplications();
@@ -227,15 +323,12 @@ function App() {
   });
 
   const totalApplications = applications.length;
-
   const totalInterviews = applications.filter(
     (application) => application.status === "Interview"
   ).length;
-
   const totalRejected = applications.filter(
     (application) => application.status === "Rejected"
   ).length;
-
   const totalOffers = applications.filter(
     (application) => application.status === "Offer"
   ).length;
@@ -288,15 +381,98 @@ function App() {
     Offer: "#22c55e",
   };
 
+  if (!user || !token) {
+    return (
+      <main className="app">
+        <section className="auth-page">
+          <div className="auth-card">
+            <p className="auth-eyebrow">Job Application Tracker</p>
+            <h1>{authMode === "login" ? "Sign in" : "Create account"}</h1>
+            <p>
+              Access your personal job application tracker and manage your
+              applications securely.
+            </p>
+
+            <form className="auth-form" onSubmit={handleAuthSubmit}>
+              {authMode === "register" && (
+                <label>
+                  Name
+                  <input
+                    type="text"
+                    name="name"
+                    value={authData.name}
+                    onChange={handleAuthChange}
+                    placeholder="Your name"
+                    required
+                  />
+                </label>
+              )}
+
+              <label>
+                Email
+                <input
+                  type="email"
+                  name="email"
+                  value={authData.email}
+                  onChange={handleAuthChange}
+                  placeholder="you@example.com"
+                  required
+                />
+              </label>
+
+              <label>
+                Password
+                <input
+                  type="password"
+                  name="password"
+                  value={authData.password}
+                  onChange={handleAuthChange}
+                  placeholder="Enter password"
+                  required
+                />
+              </label>
+
+              {authError && <p className="auth-error">{authError}</p>}
+
+              <button type="submit">
+                {authMode === "login" ? "Sign in" : "Create account"}
+              </button>
+            </form>
+
+            <button
+              className="auth-switch"
+              type="button"
+              onClick={() => {
+                setAuthMode(authMode === "login" ? "register" : "login");
+                setAuthError("");
+              }}
+            >
+              {authMode === "login"
+                ? "Need an account? Register"
+                : "Already have an account? Sign in"}
+            </button>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className="app">
-      <section className="page-header">
+      <section className="page-header app-header-row">
         <div>
           <h1>Job Application Tracker</h1>
           <p>
             Track applications, monitor progress and keep your job search
             organised.
           </p>
+        </div>
+
+        <div className="user-panel">
+          <span>{user.name}</span>
+          <button type="button" onClick={handleLogout}>
+            Logout
+          </button>
         </div>
       </section>
 
@@ -342,7 +518,7 @@ function App() {
               <p>
                 {editingApplicationId
                   ? "Update the selected job application."
-                  : "Save a new job application to the database."}
+                  : "Save a new job application to your account."}
               </p>
             </div>
 
