@@ -1,64 +1,64 @@
 # Job Application Tracker
 
-A React web application designed to organise and analyse the job search process.
+A full-stack web application designed to organise and analyse the job search process.
 
 The app allows users to track job applications, monitor progress, analyse outcomes and manage all relevant information in one place — without relying on spreadsheets.
 
 ## Live Demo
 
-https://job-application-tracker-one-omega.vercel.app
+Frontend: https://job-application-tracker-one-omega.vercel.app
+
+Backend API currently runs locally: http://localhost:5000/api/applications
 
 ## Overview
 
 Managing multiple job applications can quickly become overwhelming. This project solves that problem by providing a clean interface with filtering, search, analytics and data visualisation.
 
-The application combines frontend development with practical data analysis, focusing on usability and real-world value.
+The application combines frontend development with backend API integration and database persistence, focusing on usability and real-world value.
 
 ## Features
 
 - Add, edit and delete job applications (CRUD)
-- Store data in browser localStorage
-- Track application status:
-  - Applied
-  - Interview
-  - Rejected
-  - Offer
+- Persistent data storage using SQLite database
+- Track application status: Applied, Interview, Rejected, Offer
 - Search by company, role, notes or feedback
 - Filter applications by status
-- Sort applications by:
-  - Date (newest / oldest)
-  - Company (A–Z)
-  - Status
-- Dashboard metrics:
-  - Total applications
-  - Interviews
-  - Rejections
-  - Offers
-  - Response rate
-- Data visualisation:
-  - Applications by status (Pie Chart)
-  - Applications over time (Bar Chart)
+- Sort applications by date, company and status
+- Dashboard metrics: total applications, interviews, rejections, offers and response rate
+- Data visualisation: applications by status and applications over time
 - Export data to CSV
 - Fully responsive layout
 
 ## Tech Stack
 
+Frontend:
 - React
 - Vite
 - JavaScript
 - CSS
 - Recharts
-- localStorage
+
+Backend:
+- Node.js
+- Express
+- SQLite
+
+## API Endpoints
+
+- GET /api/applications
+- POST /api/applications
+- PUT /api/applications/:id
+- DELETE /api/applications/:id
 
 ## Data & Analytics
 
 The application includes basic analytics to help users understand their job search performance.
 
-Response rate is calculated as:
+Response rate calculation:
 
 (Interviews + Offers) / Total Applications * 100
 
-The "Applications over time" chart provides insight into activity trends and consistency of job applications.
+The applications over time chart provides insight into activity trends and consistency of job applications.
 
 ## Installation
 
@@ -74,47 +74,51 @@ Install dependencies:
 
 npm install
 
-Run the development server:
+## Running the Application
+
+Start backend:
+
+npm run server:dev
+
+Backend runs on:
+
+http://localhost:5000
+
+Start frontend in a separate terminal:
 
 npm run dev
 
-Open in browser:
+Frontend runs on:
 
-http://localhost:5173/
-
-## Scripts
-
-- `npm run dev` — run development server
-- `npm run build` — build production version
-- `npm run preview` — preview production build
+http://localhost:5173
 
 ## Data Storage
 
-This version uses browser localStorage, meaning all data is stored locally in the user's browser.
+This version uses a SQLite database through a Node.js and Express backend.
 
-For larger-scale applications, this could be extended with a backend (Node.js, Express, SQLite).
+Data is persisted on the server, allowing full CRUD operations across sessions.
 
 ## Future Improvements
 
-- Backend API (Node.js + Express)
-- Database integration (SQLite)
+- Deploy backend
 - User authentication
-- Advanced analytics (trends, ratios, time-based insights)
-- Additional status types (e.g. Assessment, No Response)
+- Advanced analytics
+- Additional status types such as Assessment and No Response
+- Backend-based CSV or PDF export
 - Dark mode
 
 ## What I Learned
 
-- Building a full React application with state management
-- Handling form data and user interactions
-- Implementing search, filtering and sorting logic
-- Persisting data with localStorage
-- Creating dashboard metrics and analytics
-- Working with Recharts for data visualisation
-- Exporting structured data to CSV
-- Designing a user-focused interface for a real problem
+- Building a full-stack application with React, Express and SQLite
+- Designing and implementing REST API endpoints
+- Managing data persistence in a relational database
+- Connecting frontend to backend using HTTP requests
+- Implementing CRUD operations across the full stack
+- Creating dashboard analytics and data visualisation
+- Structuring a project for real-world use
 
 ## Author
 
-Krzysztof Drezek  
+Krzysztof Drezek
+
 GitHub: https://github.com/KrzysztofDrezek
